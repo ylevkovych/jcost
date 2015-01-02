@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class Controller {
@@ -15,10 +16,15 @@ public class Controller {
 	
 	@ExceptionHandler({DataAccessException.class,SQLException.class,Exception.class})
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR, reason="Data access error")
-	public void dataAccessException() {}
+	public void dataAccessException() {
+		
+	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
-	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED, reason="Precondition failed")
-	public void preconditionFailed() {}
+	@ResponseStatus(value=HttpStatus.PRECONDITION_FAILED)
+	@ResponseBody
+	public String preconditionFailed(IllegalArgumentException e) {
+		return e.getLocalizedMessage();
+	}
 	
 }

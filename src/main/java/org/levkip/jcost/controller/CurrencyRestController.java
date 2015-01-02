@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.levkip.jcost.domain.Currency;
 import org.levkip.jcost.persistance.CurrencyDAO;
+import org.levkip.jcost.service.CurrencyService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +24,8 @@ public class CurrencyRestController extends Controller {
 	public static final Logger logger = LoggerFactory.getLogger(CurrencyRestController.class);
 	
 	@Autowired
-	@Qualifier("CurrencyDAO")
-	private CurrencyDAO currencyDao;	
+	@Qualifier("CurrencyServiceImpl")
+	private CurrencyService currencyService;	
 	
 	@RequestMapping(
 		value = "/rest/currency", method = { RequestMethod.GET }
@@ -32,7 +33,7 @@ public class CurrencyRestController extends Controller {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<Currency> getCurrencies() {
-		return currencyDao.getCurrencies();
+		return currencyService.getCurrencies();
 	}
 	
 	@RequestMapping(
@@ -41,8 +42,7 @@ public class CurrencyRestController extends Controller {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public Currency getCurrency(@PathVariable Long currencyId) {
-		//TODO: Should be implemented
-		return null;
+		return currencyService.getCurrencyById(currencyId);
 	}
 	
 	@RequestMapping(
@@ -51,7 +51,7 @@ public class CurrencyRestController extends Controller {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public Currency addCurrency (@RequestBody Currency currency) {		
-		return currencyDao.saveCurrency(currency);
+		return currencyService.saveCurrency(currency);
 	}
 	
 	@RequestMapping(
@@ -60,17 +60,16 @@ public class CurrencyRestController extends Controller {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public Currency updateCurrency (@RequestBody Currency currency) {
-		//TODO: Should be implemented
-		return null;
+		return currencyService.updateCurrency(currency);
 	}
 	
 	@RequestMapping(
-		value = "/rest/currency/{currencyId}", method = { RequestMethod.DELETE }
+		value = "/rest/currency/id/{currencyId}", method = { RequestMethod.DELETE }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public boolean deleteCurrency (@PathVariable Integer currencyId) {
-		//TODO: Should be implemented
+	public boolean deleteCurrency (@PathVariable Long currencyId) {		
+		currencyService.removeCurrency(currencyId);
 		return true;
 	}
 }

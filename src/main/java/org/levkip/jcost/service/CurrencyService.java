@@ -1,10 +1,10 @@
-package org.levkip.jcost.persistance;
+package org.levkip.jcost.service;
 
 import java.util.List;
 
 import org.levkip.jcost.domain.Currency;
 
-public interface CurrencyDAO extends EntityDAO{
+public interface CurrencyService {
 	
 	List<Currency> getCurrencies();
 	
@@ -15,6 +15,5 @@ public interface CurrencyDAO extends EntityDAO{
 	Currency updateCurrency(Currency currency);
 	
 	void removeCurrency(Long id);
-	
-	boolean isCurrencyUsed(Currency currency);
+
 }

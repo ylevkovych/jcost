@@ -8,7 +8,9 @@
 <head>
   <meta charset="utf-8">
   <title>Cost</title>
-  <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">     
+  <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">   
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+  <link href="http://code.jboxcdn.com/0.3.2/jBox.css" rel="stylesheet">  
 </head>
 <body>	
 	<div id="mainTab">
@@ -27,7 +29,9 @@
 
  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
+ <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+ <script src="http://code.jboxcdn.com/0.3.2/jBox.min.js"></script>
+   
  <script>
  $(document).ready(function() {
 	 $("#mainTab").tabs();

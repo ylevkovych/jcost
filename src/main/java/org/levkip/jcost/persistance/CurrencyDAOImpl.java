@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -78,13 +79,20 @@ class CurrencyDAOImpl implements CurrencyDAO {
 			throw new IllegalArgumentException("Currency id should not be empty");
 		
 		String sql = "SELECT * FROM currency WHERE id=?";
-		return jdbcTemplate.queryForObject(sql, new Object[] { id }, new RowMapper<Currency>() {
-			@Override
-			public Currency mapRow(ResultSet rs, int rowNum)
-					throws SQLException {
-				return getCurrencyFromResultSet(rs);
-			}
-		});
+		
+		logger.debug("sql ["+sql+"]");
+		
+		try {
+			return jdbcTemplate.queryForObject(sql, new Object[] { id }, new RowMapper<Currency>() {
+				@Override
+				public Currency mapRow(ResultSet rs, int rowNum)
+						throws SQLException {
+					return getCurrencyFromResultSet(rs);
+				}
+			});
+		} catch (DataAccessException dae) {
+			throw new EmptyResultDataAccessException("There is no currency with id "+id, 1);
+		}
 	}
 
 	@Override
@@ -95,10 +103,13 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		Long id = this.getNextId();
 		
 		String sql = "INSERT INTO currency (id, name, short_name) VALUES (?,?,?)";
-		
+				
 		logger.debug("sql ["+sql+"]; id="+id+"; name="+currency.getName()+"; shortName="+currency.getShortName());
-		
-		jdbcTemplate.update(sql, id, currency.getName(), currency.getShortName());
+		try {
+			jdbcTemplate.update(sql, id, currency.getName(), currency.getShortName());
+		} catch (DataAccessException dae) {
+			throw new EmptyResultDataAccessException("Currency was not saved", 1);
+		}
 		currency.setId(id);
 		return currency;			
 	}
@@ -109,8 +120,14 @@ class CurrencyDAOImpl implements CurrencyDAO {
 			throw new IllegalArgumentException("Currency should not be empty");
 		
 		String sql = "UPDATE currency SET name=?, short_name=? WHERE id=?";
+		
+		logger.debug("sql ["+sql+"]");
 				
-		jdbcTemplate.update(sql, currency.getName(), currency.getShortName(), currency.getId());
+		try {
+			jdbcTemplate.update(sql, currency.getName(), currency.getShortName(), currency.getId());
+		} catch (DataAccessException dae) {
+			throw new EmptyResultDataAccessException("Currency ID: "+currency.getId()+" was not updated", 1);
+		}
 		return currency;		
 	}
 
@@ -121,7 +138,13 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		
 		String sql = "DELETE FROM currency WHERE id=?";
 		
-		jdbcTemplate.update(sql, id);
+		logger.debug("sql ["+sql+"]");
+		
+		try {
+			jdbcTemplate.update(sql, id);
+		} catch (DataAccessException dae) {
+			throw new EmptyResultDataAccessException("Currency ID: "+id+" was not deleted", 1);
+		}
 	}
 	
 	private Currency getCurrencyFromResultSet(ResultSet rs) throws SQLException {
@@ -134,5 +157,20 @@ class CurrencyDAOImpl implements CurrencyDAO {
 			rs.getString("short_name") == null ? "" : rs.getString("short_name")
 		);
 		return currency;
+	}
+	
+	public boolean isCurrencyUsed(Currency currency) {
+		
+		String sql = "SELECT TOP 1 1 FROM currency WHERE short_name=? ";
+		
+		if (currency.getId() != null) {
+			sql += " AND id <> " + currency.getId();
+		}
+		
+		try {
+			return this.jdbcTemplate.queryForObject(sql, new Object[] {currency.getShortName()}, Boolean.class);
+		} catch (DataAccessException dae) { }
+		
+		return false;
 	}
 }
