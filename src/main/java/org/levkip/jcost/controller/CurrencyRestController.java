@@ -3,7 +3,6 @@ package org.levkip.jcost.controller;
 import java.util.List;
 
 import org.levkip.jcost.domain.Currency;
-import org.levkip.jcost.persistance.CurrencyDAO;
 import org.levkip.jcost.service.CurrencyService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class CurrencyRestController extends Controller {
 	private CurrencyService currencyService;	
 	
 	@RequestMapping(
-		value = "/rest/currency", method = { RequestMethod.GET }
+		value = "rest/currency", method = { RequestMethod.GET }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -37,7 +36,7 @@ public class CurrencyRestController extends Controller {
 	}
 	
 	@RequestMapping(
-		value = "/rest/currency/id/{currencyId}", method = { RequestMethod.GET }
+		value = "rest/currency/id/{currencyId}", method = { RequestMethod.GET }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -46,7 +45,7 @@ public class CurrencyRestController extends Controller {
 	}
 	
 	@RequestMapping(
-		value = "/rest/currency", method = { RequestMethod.POST }
+		value = "rest/currency", method = { RequestMethod.POST }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -55,7 +54,7 @@ public class CurrencyRestController extends Controller {
 	}
 	
 	@RequestMapping(
-		value = "/rest/currency", method = { RequestMethod.PUT }
+		value = "rest/currency", method = { RequestMethod.PUT }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -64,7 +63,7 @@ public class CurrencyRestController extends Controller {
 	}
 	
 	@RequestMapping(
-		value = "/rest/currency/id/{currencyId}", method = { RequestMethod.DELETE }
+		value = "rest/currency/id/{currencyId}", method = { RequestMethod.DELETE }
 	)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody

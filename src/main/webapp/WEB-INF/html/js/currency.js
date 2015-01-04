@@ -1,7 +1,5 @@
 var jcost = jcost || {};
 
-//***************
-// get currencies
 jcost.currency = {
 		
 	populateCurrencies: function() {
@@ -21,28 +19,21 @@ jcost.currency = {
 				method,
 				null,
 				currency,
-				jcost.currency.saveCurrenciesOnSuccess,
-				jcost.currency.saveCurrenciesOnFail);
+				jcost.currency.saveCurrencyOnSuccess,
+				jcost.currency.saveCurrencyOnFail);
 		jcost.common.callRest(restCall);
 	},
-	saveCurrenciesOnSuccess: function() {
+	saveCurrencyOnSuccess: function() {
 		jcost.currency.ui.closeDialog();
 		jcost.currency.ui.clearDialog();
 		jcost.common.notice.success("Currency successfully saved");
 		jcost.currency.populateCurrencies();
-		jcost.currency.saveCurrenciesPostProcess();
+		jcost.currency.saveCurrencyPostProcess();
 	},
-	saveCurrenciesOnFail: function() {
-		var tltp = $(document).tooltip({
-			content: function() {
-				return "Errors occured!!!!!!!";
-			}
-		});
-		console.log("tltp: "+tltp);
-		tltp.tooltip("open");
-		jcost.currency.saveCurrenciesPostProcess();
+	saveCurrencyOnFail: function() {
+		jcost.currency.saveCurrencyPostProcess();
 	},
-	saveCurrenciesPostProcess: function() {
+	saveCurrencyPostProcess: function() {
 		jcost.currency.ui.unblockUI();
 	},
 	
@@ -61,15 +52,15 @@ jcost.currency = {
 				jcost.common.Methods.DELETE,
 				params,
 				null,
-				jcost.currency.deleteCurrenciesOnSuccess,
-				jcost.currency.deleteCurrenciesOnFail);
+				jcost.currency.deleteCurrencyOnSuccess,
+				jcost.currency.deleteCurrencyOnFail);
 		jcost.common.callRest(restCall);
 	},
-	deleteCurrenciesOnSuccess: function() {
+	deleteCurrencyOnSuccess: function() {
 		jcost.common.notice.success("Currency successfully removed");
 		jcost.currency.populateCurrencies();
 	},
-	deleteCurrenciesOnFail: function() { },
+	deleteCurrencyOnFail: function() { },
 
 	
 	editCurrency: function(id) {
@@ -87,16 +78,16 @@ jcost.currency = {
 				jcost.common.Methods.GET,
 				params,
 				null,
-				jcost.currency.editCurrenciesOnSuccess,
-				jcost.currency.editCurrenciesOnFail);
+				jcost.currency.editCurrencyOnSuccess,
+				jcost.currency.editCurrencyOnFail);
 		jcost.common.callRest(restCall);
 	},
-	editCurrenciesOnSuccess: function(data) {
+	editCurrencyOnSuccess: function(data) {
 		if (!data) return;		
-		jcost.currency.ui.fillDialog(data);	
 		jcost.currency.ui.openDialog();
+		jcost.currency.processor.currencyToModal(data);	
 	},
-	editCurrenciesOnFail: function() { },
+	editCurrencyOnFail: function() { },
 
 	init: function() {	
 		jcost.currency.populateCurrencies();	
@@ -107,35 +98,26 @@ jcost.currency = {
 //UI functions
 jcost.currency.ui = {
 	blockUI: function(){
-		//$("#currencyName").val("");
-		//$("#currencyLongName").val("");
+		
 	},
 	unblockUI: function() {
 		
 	},
 	openDialog: function() {
-		dlgCurrency.open();
+		$( "#dlgCurrency" ).dialog("open");
 	},
 	closeDialog: function() {
-		dlgCurrency.close();
+		$( "#dlgCurrency" ).dialog("close");
 	},
 	clearDialog: function() {
 		$("#currencyId").val("");
 		$("#currencyName").val("");
 		$("#currencyLongName").val("");
-	},
-	fillDialog: function(data) {
-		if (!data.id) return;
-				
-		$("#currencyId").val(data.id);
-		$("#currencyName").val(data.shortName ? data.shortName : "");
-		$("#currencyLongName").val(data.name ? data.name : "");
-	}
-		
+	}		
 };
 
 //*****************
-//Model functions
+//Model to view, view to model functions
 jcost.currency.processor = {
 	currencyFromModal: function() {
 		var currency = {
@@ -143,7 +125,15 @@ jcost.currency.processor = {
 			name: $("#currencyLongName").val(),
 			shortName: $("#currencyName").val()
 		};
+		console.log(currency);
 		return currency;
+	},
+	currencyToModal: function(data) {
+		if (!data || !data.id) return;
+		console.log("data.id: "+data.id+"; data,shortName: "+data.shortName);		
+		$("#currencyId").val(data.id);
+		$("#currencyName").val(data.shortName ? data.shortName : "");
+		$("#currencyLongName").val(data.name ? data.name : "");
 	}
 		
 };

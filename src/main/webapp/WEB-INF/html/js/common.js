@@ -132,6 +132,12 @@ jcost.common.ui = {
 				 }
 			 }
 		});
+	},
+	
+	isHandled: function(e) {
+		if (e && e.handled) return true;
+		e.handled = true;
+		return false;
 	}
 }
 
@@ -157,7 +163,14 @@ jcost.common.Urls = {
 	getCurrencies: "rest/currency",
 	saveCurrency: "rest/currency",
 	removeCurrency: "rest/currency/id/{currencyId}",
-	getCurrency: "rest/currency/id/{currencyId}"
+	getCurrency: "rest/currency/id/{currencyId}",
+	
+	// resident
+	getResidents: "rest/resident",
+	saveResident: "rest/resident",
+	removeResident: "rest/resident/id/{residentId}",
+	getResident: "rest/resident/id/{residentId}"
 		
 };
+
 

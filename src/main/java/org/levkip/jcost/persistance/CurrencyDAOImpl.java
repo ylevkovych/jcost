@@ -78,7 +78,7 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		if (id == null)
 			throw new IllegalArgumentException("Currency id should not be empty");
 		
-		String sql = "SELECT * FROM currency WHERE id=?";
+		String sql = "SELECT * FROM " + DB_NAME + " WHERE id=?";
 		
 		logger.debug("sql ["+sql+"]");
 		
@@ -102,7 +102,7 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		
 		Long id = this.getNextId();
 		
-		String sql = "INSERT INTO currency (id, name, short_name) VALUES (?,?,?)";
+		String sql = "INSERT INTO " + DB_NAME + " (id, name, short_name) VALUES (?,?,?)";
 				
 		logger.debug("sql ["+sql+"]; id="+id+"; name="+currency.getName()+"; shortName="+currency.getShortName());
 		try {
@@ -119,7 +119,7 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		if (currency == null)
 			throw new IllegalArgumentException("Currency should not be empty");
 		
-		String sql = "UPDATE currency SET name=?, short_name=? WHERE id=?";
+		String sql = "UPDATE " + DB_NAME + " SET name=?, short_name=? WHERE id=?";
 		
 		logger.debug("sql ["+sql+"]");
 				
@@ -136,7 +136,7 @@ class CurrencyDAOImpl implements CurrencyDAO {
 		if (id == null)
 			throw new IllegalArgumentException("Currency id should not be empty");
 		
-		String sql = "DELETE FROM currency WHERE id=?";
+		String sql = "DELETE FROM " + DB_NAME + " WHERE id=?";
 		
 		logger.debug("sql ["+sql+"]");
 		

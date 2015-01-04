@@ -1,9 +1,11 @@
 package org.levkip.jcost.domain;
 
 
-class Resident extends Entity {
+public class Resident extends Entity {
     private String name;
     private String comment;
+    
+    public Resident() {}
     
 	public String getName() {
 		return name;

@@ -2,7 +2,6 @@ package org.levkip.jcost.service;
 
 import java.util.List;
 
-import org.levkip.jcost.controller.CurrencyRestController;
 import org.levkip.jcost.domain.Currency;
 import org.levkip.jcost.persistance.CurrencyDAO;
 import org.slf4j.Logger;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service("CurrencyServiceImpl")
 public class CurrencyServiceImpl implements CurrencyService {
 	
-	public static final Logger logger = LoggerFactory.getLogger(CurrencyRestController.class);
+	public static final Logger logger = LoggerFactory.getLogger(CurrencyServiceImpl.class);
 	
 	private CurrencyDAO currencyDao;
 	@Autowired

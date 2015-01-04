@@ -32,4 +32,11 @@ public class PageController{
 	public String currency(Model model) {
 		return "currency";
 	}
+	
+	@RequestMapping(
+		value = "/resident", method = { RequestMethod.GET }
+	)
+	public String resident(Model model) {
+		return "resident";
+	}
 }

@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS jcost;
-CREATE DATABASE jcost;
+CREATE DATABASE jcost character set utf8;
 USE jcost;
 
 CREATE TABLE currency 

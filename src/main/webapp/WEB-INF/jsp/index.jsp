@@ -17,13 +17,12 @@
 	  	<ul>
 	  	  <li><a href="#t1">Orders</a></li>
 	  	  <li><a href="#t2">Services</a></li>
-	  	  <li><a href="#t3">Residents</a></li>
+	  	  <li><a href="/jcost/resident">Residents</a></li>
 	  	  <li><a href="#t4">Goods</a></li>
 	  	  <li><a href="/jcost/currency">Currencies</a></li>
 	  	</ul>	  
 	    <div id="t1">TODO: Order page should be implemented</div>
 	    <div id="t2">TODO: Service page should be implemented</div>
-	    <div id="t3">TODO: Resident page should be implemented</div>
 	    <div id="t4">TODO: Good page should be implemented</div>
 	 </div>
 
